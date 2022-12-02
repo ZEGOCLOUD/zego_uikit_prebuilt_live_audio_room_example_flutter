@@ -187,11 +187,52 @@ class LivePage extends StatelessWidget {
         config: (isHost
             ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
             : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
-          ..seatIndex = isHost ? getHostSeatIndex() : -1
-          ..lockSeatIndexesForHost = getLockSeatIndex()
+          ..takeSeatIndexWhenJoining = isHost ? getHostSeatIndex() : -1
+          ..hostSeatIndexes = getLockSeatIndex()
           ..layoutConfig = getLayoutConfig()
-          ..seatConfig = getSeatConfig(),
+          ..seatConfig = getSeatConfig()
+          ..background = background(),
       ),
+    );
+  }
+
+  Widget background() {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: Image.asset("assets/images/background.png").image,
+            ),
+          ),
+        ),
+        const Positioned(
+            top: 10,
+            left: 10,
+            child: Text(
+              "Live Audio Room",
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Color(0xff1B1B1B),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            )),
+        Positioned(
+          top: 10 + 20,
+          left: 10,
+          child: Text(
+            "ID: $liveID",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Color(0xff606060),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -206,7 +247,18 @@ class LivePage extends StatelessWidget {
       );
     }
 
-    return ZegoLiveAudioRoomSeatConfig(foregroundBuilder: foregroundBuilder);
+    return ZegoLiveAudioRoomSeatConfig(
+        foregroundBuilder: foregroundBuilder, avatarBuilder: avatarBuilder);
+  }
+
+  Widget avatarBuilder(
+      BuildContext context, Size size, ZegoUIKitUser? user, Map extraInfo) {
+    return CircleAvatar(
+      maxRadius: size.width,
+      backgroundImage: Image.asset(
+              "assets/avatars/avatar_${((int.tryParse(user?.id ?? "") ?? 0) % 6).toString()}.png")
+          .image,
+    );
   }
 
   Widget foregroundBuilder(
