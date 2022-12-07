@@ -3,7 +3,6 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 // Package imports:
 import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
@@ -48,7 +47,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   /// Users who use the same liveID can join the same live audio room.
-  final liveTextCtrl =
+  final roomIDTextCtrl =
       TextEditingController(text: Random().nextInt(10000).toString());
   final layoutValueNotifier =
       ValueNotifier<LayoutMode>(LayoutMode.defaultLayout);
@@ -90,7 +89,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             TextFormField(
-              controller: liveTextCtrl,
+              controller: roomIDTextCtrl,
               decoration: const InputDecoration(labelText: "join a live by id"),
             ),
             const SizedBox(height: 20),
@@ -100,7 +99,7 @@ class HomePage extends StatelessWidget {
               child: const Text('Start a live'),
               onPressed: () => jumpToLivePage(
                 context,
-                liveID: liveTextCtrl.text,
+                roomID: roomIDTextCtrl.text,
                 isHost: true,
               ),
             ),
@@ -111,7 +110,7 @@ class HomePage extends StatelessWidget {
               child: const Text('Watch a live'),
               onPressed: () => jumpToLivePage(
                 context,
-                liveID: liveTextCtrl.text,
+                roomID: roomIDTextCtrl.text,
                 isHost: false,
               ),
             ),
@@ -122,12 +121,12 @@ class HomePage extends StatelessWidget {
   }
 
   jumpToLivePage(BuildContext context,
-      {required String liveID, required bool isHost}) {
+      {required String roomID, required bool isHost}) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LivePage(
-          liveID: liveID,
+          roomID: roomID,
           isHost: isHost,
           layoutMode: layoutValueNotifier.value,
         ),
@@ -164,13 +163,13 @@ class HomePage extends StatelessWidget {
 
 // integrate code :
 class LivePage extends StatelessWidget {
-  final String liveID;
+  final String roomID;
   final bool isHost;
   final LayoutMode layoutMode;
 
   const LivePage({
     Key? key,
-    required this.liveID,
+    required this.roomID,
     this.layoutMode = LayoutMode.defaultLayout,
     this.isHost = false,
   }) : super(key: key);
@@ -183,7 +182,7 @@ class LivePage extends StatelessWidget {
         appSign: /*input your AppSign*/,
         userID: localUserID,
         userName: 'user_$localUserID',
-        liveID: liveID,
+        roomID: roomID,
         config: (isHost
             ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
             : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
@@ -223,7 +222,7 @@ class LivePage extends StatelessWidget {
           top: 10 + 20,
           left: 10,
           child: Text(
-            "ID: $liveID",
+            "ID: $roomID",
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Color(0xff606060),
@@ -243,12 +242,12 @@ class LivePage extends StatelessWidget {
             ZegoUIKitUser? user, Map extraInfo) {
           return Container(color: Colors.grey);
         },
-        foregroundBuilder: foregroundBuilder,
       );
     }
 
     return ZegoLiveAudioRoomSeatConfig(
-        foregroundBuilder: foregroundBuilder, avatarBuilder: avatarBuilder);
+      avatarBuilder: avatarBuilder,
+    );
   }
 
   Widget avatarBuilder(
@@ -258,15 +257,6 @@ class LivePage extends StatelessWidget {
       backgroundImage: Image.asset(
               "assets/avatars/avatar_${((int.tryParse(user?.id ?? "") ?? 0) % 6).toString()}.png")
           .image,
-    );
-  }
-
-  Widget foregroundBuilder(
-      BuildContext context, Size size, ZegoUIKitUser? user, Map extraInfo) {
-    return DottedBorder(
-      color: Colors.black,
-      strokeWidth: 1,
-      child: Container(),
     );
   }
 
