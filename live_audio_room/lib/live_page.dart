@@ -107,8 +107,24 @@ class LivePage extends StatelessWidget {
         debugPrint(
             'live audio room controller: on seat taking request canceled, audience:${audience.toString()}');
       },
-      onHostInviteToTakeSeat: () {
-        debugPrint('live audio room controller: on host invite to take seat');
+      onInviteAudienceToTakeSeatFailed: () {
+        debugPrint(
+            'live audio room controller: on invite audience to take seat failed');
+      },
+      onSeatTakingInviteRejected: () {
+        debugPrint(
+            'live audio room controller: on seat taking invite rejected');
+      },
+      onSeatTakingRequestFailed: () {
+        debugPrint('live audio room controller: on seat taking request failed');
+      },
+      onSeatTakingRequestRejected: () {
+        debugPrint(
+            'live audio room controller: on seat taking request rejected');
+      },
+      onHostSeatTakingInviteSent: () {
+        debugPrint(
+            'live audio room controller: on host seat taking invite sent');
       },
 
       /// WARNING: will override prebuilt logic
