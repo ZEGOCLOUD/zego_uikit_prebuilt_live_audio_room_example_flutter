@@ -16,7 +16,7 @@ dependencies:
   dotted_border: ^2.0.0
 
   flutter_screenutil: ">=5.5.3+2 <5.6.1"
-  zego_uikit_prebuilt_live_audio_room: ^2.1.0
+  zego_uikit_prebuilt_live_audio_room: ^2.1.1
   zego_uikit_signaling_plugin: ^2.0.2
 
 dev_dependencies:
