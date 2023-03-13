@@ -24,22 +24,78 @@ class LivePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveAudioRoom(
-        appID: yourAppID /*input your AppID*/,
-        appSign: yourAppSign /*input your AppSign*/,
-        userID: localUserID,
-        userName: 'user_$localUserID',
-        roomID: roomID,
-        config: (isHost
-            ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
-            : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
-          ..takeSeatIndexWhenJoining = isHost ? getHostSeatIndex() : -1
-          ..hostSeatIndexes = getLockSeatIndex()
-          ..layoutConfig = getLayoutConfig()
-          ..seatConfig = getSeatConfig()
-          ..background = background()
-          ..inRoomMessageViewConfig = getMessageViewConfig(),
-        controller: getController(context),
-      ),
+          appID: yourAppID /*input your AppID*/,
+          appSign: yourAppSign /*input your AppSign*/,
+          userID: localUserID,
+          userName: 'user_$localUserID',
+          roomID: roomID,
+          config: (isHost
+              ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
+              : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
+            ..takeSeatIndexWhenJoining = isHost ? getHostSeatIndex() : -1
+            ..hostSeatIndexes = getLockSeatIndex()
+            ..layoutConfig = getLayoutConfig()
+            ..seatConfig = getSeatConfig()
+            ..background = background()
+            ..inRoomMessageViewConfig = getMessageViewConfig()
+            // ..userAvatarUrl = 'your_avatar_url'
+            ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
+              debugPrint(
+                  'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
+            }
+            ..onSeatClosed = () {
+              debugPrint('on seat closed');
+            }
+            ..onSeatsOpened = () {
+              debugPrint('on seat opened');
+            }
+            ..onSeatsChanged = (
+              Map<int, ZegoUIKitUser> takenSeats,
+              List<int> untakenSeats,
+            ) {
+              debugPrint(
+                  'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
+            }
+            ..onSeatTakingRequested = (ZegoUIKitUser audience) {
+              debugPrint(
+                  'on seat taking requested, audience:${audience.toString()}');
+            }
+            ..onSeatTakingRequestCanceled = (ZegoUIKitUser audience) {
+              debugPrint(
+                  'on seat taking request canceled, audience:${audience.toString()}');
+            }
+            ..onInviteAudienceToTakeSeatFailed = () {
+              debugPrint('on invite audience to take seat failed');
+            }
+            ..onSeatTakingInviteRejected = () {
+              debugPrint('on seat taking invite rejected');
+            }
+            ..onSeatTakingRequestFailed = () {
+              debugPrint('on seat taking request failed');
+            }
+            ..onSeatTakingRequestRejected = () {
+              debugPrint('on seat taking request rejected');
+            }
+            ..onHostSeatTakingInviteSent = () {
+              debugPrint('on host seat taking invite sent');
+            }
+
+          /// WARNING: will override prebuilt logic
+          // ..onSeatClicked = (int index, ZegoUIKitUser? user) {
+          //   debugPrint(
+          //       'on seat clicked, index:$index, user:${user.toString()}');
+          //
+          //   showDemoBottomSheet(context);
+          // }
+
+          /// WARNING: will override prebuilt logic
+          // ..onMemberListMoreButtonPressed = (ZegoUIKitUser user) {
+          //   debugPrint(
+          //       'on member list more button pressed, user:${user.toString()}');
+          //
+          //   showDemoBottomSheet(context);
+          // },
+          ),
     );
   }
 
@@ -81,67 +137,6 @@ class LivePage extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-
-  ZegoLiveAudioRoomController getController(BuildContext context) {
-    return ZegoLiveAudioRoomController(
-      onSeatClosed: () {
-        debugPrint('live audio room controller: on seat closed');
-      },
-      onSeatsOpened: () {
-        debugPrint('live audio room controller: on seat opened');
-      },
-      onSeatsChanged: (
-        Map<int, ZegoUIKitUser> takenSeats,
-        List<int> untakenSeats,
-      ) {
-        debugPrint(
-            'live audio room controller: on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
-      },
-      onSeatTakingRequested: (ZegoUIKitUser audience) {
-        debugPrint(
-            'live audio room controller: on seat taking requested, audience:${audience.toString()}');
-      },
-      onSeatTakingRequestCanceled: (ZegoUIKitUser audience) {
-        debugPrint(
-            'live audio room controller: on seat taking request canceled, audience:${audience.toString()}');
-      },
-      onInviteAudienceToTakeSeatFailed: () {
-        debugPrint(
-            'live audio room controller: on invite audience to take seat failed');
-      },
-      onSeatTakingInviteRejected: () {
-        debugPrint(
-            'live audio room controller: on seat taking invite rejected');
-      },
-      onSeatTakingRequestFailed: () {
-        debugPrint('live audio room controller: on seat taking request failed');
-      },
-      onSeatTakingRequestRejected: () {
-        debugPrint(
-            'live audio room controller: on seat taking request rejected');
-      },
-      onHostSeatTakingInviteSent: () {
-        debugPrint(
-            'live audio room controller: on host seat taking invite sent');
-      },
-
-      /// WARNING: will override prebuilt logic
-      // onSeatClicked: (int index, ZegoUIKitUser? user) {
-      //   debugPrint(
-      //       'live audio room controller: on seat clicked, index:$index, user:${user.toString()}');
-      //
-      //   showDemoBottomSheet(context);
-      // },
-
-      /// WARNING: will override prebuilt logic
-      // onMemberListMoreButtonPressed: (ZegoUIKitUser user) {
-      //   debugPrint(
-      //       'live audio room controller: on member list more button pressed, user:${user.toString()}');
-      //
-      //   showDemoBottomSheet(context);
-      // },
     );
   }
 
