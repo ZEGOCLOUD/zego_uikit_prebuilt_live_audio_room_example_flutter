@@ -2,6 +2,10 @@
 # Overview
 - - -
 
+[![](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/EtNRATttyp)
+
+> If you have any questions regarding bugs and feature requests, visit the [ZEGOCLOUD community](https://discord.gg/EtNRATttyp) .
+
 **Live Audio Room Kit** is a prebuilt component that helps you to build full-featured live audio rooms into your apps easier.
 
 And it includes the business logic along with the UI, enabling you to customize your live audio apps faster with more flexibility. 
