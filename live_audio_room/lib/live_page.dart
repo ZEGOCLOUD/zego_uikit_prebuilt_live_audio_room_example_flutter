@@ -6,7 +6,7 @@ import 'package:zego_uikit_prebuilt_live_audio_room/src/components/message/in_ro
 import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
 
 // Project imports:
-import 'package:live_audio_room/constants.dart';
+import 'constants.dart';
 
 class LivePage extends StatelessWidget {
   final String roomID;

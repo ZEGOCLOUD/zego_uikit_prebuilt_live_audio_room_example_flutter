@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  zego_uikit_prebuilt_live_audio_room: ^2.2.1
+  zego_uikit_prebuilt_live_audio_room: ^2.2.3
   zego_uikit_signaling_plugin: ^2.0.2
 
   cupertino_icons: ^1.0.2
