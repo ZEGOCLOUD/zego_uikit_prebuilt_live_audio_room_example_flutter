@@ -4,6 +4,9 @@ import 'dart:math';
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
+
 // Project imports:
 import 'package:live_audio_room/constants.dart';
 import 'package:live_audio_room/live_page.dart';
@@ -62,23 +65,41 @@ class HomePage extends StatelessWidget {
             // click me to navigate to LivePage
             ElevatedButton(
               style: buttonStyle,
+              onPressed: () {
+                if (ZegoUIKitPrebuiltLiveAudioRoomMiniOverlayMachine()
+                    .isMinimizing) {
+                  /// when the application is minimized (in a minimized state),
+                  /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
+                  return;
+                }
+
+                jumpToLivePage(
+                  context,
+                  roomID: roomIDTextCtrl.text.trim(),
+                  isHost: true,
+                );
+              },
               child: const Text('Start a live'),
-              onPressed: () => jumpToLivePage(
-                context,
-                roomID: roomIDTextCtrl.text.trim(),
-                isHost: true,
-              ),
             ),
             const SizedBox(height: 20),
             // click me to navigate to LivePage
             ElevatedButton(
               style: buttonStyle,
+              onPressed: () {
+                if (ZegoUIKitPrebuiltLiveAudioRoomMiniOverlayMachine()
+                    .isMinimizing) {
+                  /// when the application is minimized (in a minimized state),
+                  /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
+                  return;
+                }
+
+                jumpToLivePage(
+                  context,
+                  roomID: roomIDTextCtrl.text.trim(),
+                  isHost: false,
+                );
+              },
               child: const Text('Watch a live'),
-              onPressed: () => jumpToLivePage(
-                context,
-                roomID: roomIDTextCtrl.text,
-                isHost: false,
-              ),
             ),
           ],
         ),

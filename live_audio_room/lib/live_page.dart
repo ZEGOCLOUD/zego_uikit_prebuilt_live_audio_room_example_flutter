@@ -38,6 +38,9 @@ class LivePage extends StatelessWidget {
             ..seatConfig = getSeatConfig()
             ..background = background()
             ..inRoomMessageViewConfig = getMessageViewConfig()
+            ..topMenuBarConfig.buttons = [
+              ZegoTopMenuBarButtonName.minimizingButton
+            ]
             // ..userAvatarUrl = 'your_avatar_url'
             ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
               debugPrint(
