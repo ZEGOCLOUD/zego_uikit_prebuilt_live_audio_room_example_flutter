@@ -159,8 +159,8 @@ class LivePage extends StatelessWidget {
     }
 
     return ZegoLiveAudioRoomSeatConfig(
-      avatarBuilder: avatarBuilder,
-    );
+        // avatarBuilder: avatarBuilder,
+        );
   }
 
   ZegoInRoomMessageViewConfig getMessageViewConfig() {
