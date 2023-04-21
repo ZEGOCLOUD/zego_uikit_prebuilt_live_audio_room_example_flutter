@@ -41,7 +41,8 @@ class LivePage extends StatelessWidget {
             ..topMenuBarConfig.buttons = [
               ZegoTopMenuBarButtonName.minimizingButton
             ]
-            // ..userAvatarUrl = 'your_avatar_url'
+            ..userAvatarUrl =
+                'https://robohash.org/${DateTime.now().millisecondsSinceEpoch}.png'
             ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
               debugPrint(
                   'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
