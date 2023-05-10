@@ -8,7 +8,7 @@ import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_aud
 // Project imports:
 import 'constants.dart';
 
-class LivePage extends StatelessWidget {
+class LivePage extends StatefulWidget {
   final String roomID;
   final bool isHost;
   final LayoutMode layoutMode;
@@ -21,6 +21,12 @@ class LivePage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => LivePageState();
+}
+
+class LivePageState extends State<LivePage> {
+  ZegoLiveAudioRoomController? controller;
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveAudioRoom(
@@ -28,18 +34,19 @@ class LivePage extends StatelessWidget {
           appSign: yourAppSign /*input your AppSign*/,
           userID: localUserID,
           userName: 'user_$localUserID',
-          roomID: roomID,
-          config: (isHost
+          roomID: widget.roomID,
+          controller: controller,
+          config: (widget.isHost
               ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
               : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
-            ..takeSeatIndexWhenJoining = isHost ? getHostSeatIndex() : -1
+            ..takeSeatIndexWhenJoining = widget.isHost ? getHostSeatIndex() : -1
             ..hostSeatIndexes = getLockSeatIndex()
             ..layoutConfig = getLayoutConfig()
             ..seatConfig = getSeatConfig()
             ..background = background()
             ..inRoomMessageViewConfig = getMessageViewConfig()
             ..topMenuBarConfig.buttons = [
-              ZegoTopMenuBarButtonName.minimizingButton
+              ZegoMenuBarButtonName.minimizingButton
             ]
             ..userAvatarUrl =
                 'https://robohash.org/${DateTime.now().millisecondsSinceEpoch}.png'
@@ -131,7 +138,7 @@ class LivePage extends StatelessWidget {
           top: 10 + 20,
           left: 10,
           child: Text(
-            'ID: $roomID',
+            'ID: ${widget.roomID}',
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Color(0xff606060),
@@ -145,7 +152,7 @@ class LivePage extends StatelessWidget {
   }
 
   ZegoLiveAudioRoomSeatConfig getSeatConfig() {
-    if (layoutMode == LayoutMode.hostTopCenter) {
+    if (widget.layoutMode == LayoutMode.hostTopCenter) {
       return ZegoLiveAudioRoomSeatConfig(
         backgroundBuilder: (
           BuildContext context,
@@ -210,7 +217,7 @@ class LivePage extends StatelessWidget {
   }
 
   int getHostSeatIndex() {
-    if (layoutMode == LayoutMode.hostCenter) {
+    if (widget.layoutMode == LayoutMode.hostCenter) {
       return 4;
     }
 
@@ -218,7 +225,7 @@ class LivePage extends StatelessWidget {
   }
 
   List<int> getLockSeatIndex() {
-    if (layoutMode == LayoutMode.hostCenter) {
+    if (widget.layoutMode == LayoutMode.hostCenter) {
       return [4];
     }
 
@@ -227,7 +234,7 @@ class LivePage extends StatelessWidget {
 
   ZegoLiveAudioRoomLayoutConfig getLayoutConfig() {
     final config = ZegoLiveAudioRoomLayoutConfig();
-    switch (layoutMode) {
+    switch (widget.layoutMode) {
       case LayoutMode.defaultLayout:
         break;
       case LayoutMode.full:
