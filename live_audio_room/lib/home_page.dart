@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
 
 // Project imports:
-import 'package:live_audio_room/constants.dart';
-import 'package:live_audio_room/live_page.dart';
+import 'constants.dart';
+import 'live_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);

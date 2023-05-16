@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:zego_uikit/zego_uikit.dart';
 import 'package:zego_uikit_prebuilt_live_audio_room/src/components/message/in_room_live_commenting_view_item.dart';
 import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
 
@@ -68,12 +69,10 @@ class LivePageState extends State<LivePage> {
                   'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
             }
             ..onSeatTakingRequested = (ZegoUIKitUser audience) {
-              debugPrint(
-                  'on seat taking requested, audience:${audience.toString()}');
+              debugPrint('on seat taking requested, audience:$audience');
             }
             ..onSeatTakingRequestCanceled = (ZegoUIKitUser audience) {
-              debugPrint(
-                  'on seat taking request canceled, audience:${audience.toString()}');
+              debugPrint('on seat taking request canceled, audience:$audience');
             }
             ..onInviteAudienceToTakeSeatFailed = () {
               debugPrint('on invite audience to take seat failed');
