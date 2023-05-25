@@ -26,7 +26,7 @@ class LivePage extends StatefulWidget {
 }
 
 class LivePageState extends State<LivePage> {
-  ZegoLiveAudioRoomController? controller;
+  ZegoLiveAudioRoomController? liveController;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +36,7 @@ class LivePageState extends State<LivePage> {
           userID: localUserID,
           userName: 'user_$localUserID',
           roomID: widget.roomID,
-          controller: controller,
+          controller: liveController,
           config: (widget.isHost
               ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
               : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
