@@ -27,85 +27,89 @@ class LivePage extends StatefulWidget {
 
 class LivePageState extends State<LivePage> {
   ZegoLiveAudioRoomController? liveController;
+
+  @override
+  void initState() {
+    super.initState();
+    liveController = ZegoLiveAudioRoomController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    liveController = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveAudioRoom(
-          appID: yourAppID /*input your AppID*/,
-          appSign: yourAppSign /*input your AppSign*/,
-          userID: localUserID,
-          userName: 'user_$localUserID',
-          roomID: widget.roomID,
-          controller: liveController,
-          config: (widget.isHost
-              ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
-              : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
-            ..takeSeatIndexWhenJoining = widget.isHost ? getHostSeatIndex() : -1
-            ..hostSeatIndexes = getLockSeatIndex()
-            ..layoutConfig = getLayoutConfig()
-            ..seatConfig = getSeatConfig()
-            ..background = background()
-            ..inRoomMessageViewConfig = getMessageViewConfig()
-            ..topMenuBarConfig.buttons = [
-              ZegoMenuBarButtonName.minimizingButton
-            ]
-            ..userAvatarUrl =
-                'https://robohash.org/${DateTime.now().millisecondsSinceEpoch}.png'
-            ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
-              debugPrint(
-                  'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
-            }
-            ..onSeatClosed = () {
-              debugPrint('on seat closed');
-            }
-            ..onSeatsOpened = () {
-              debugPrint('on seat opened');
-            }
-            ..onSeatsChanged = (
-              Map<int, ZegoUIKitUser> takenSeats,
-              List<int> untakenSeats,
-            ) {
-              debugPrint(
-                  'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
-            }
-            ..onSeatTakingRequested = (ZegoUIKitUser audience) {
-              debugPrint('on seat taking requested, audience:$audience');
-            }
-            ..onSeatTakingRequestCanceled = (ZegoUIKitUser audience) {
-              debugPrint('on seat taking request canceled, audience:$audience');
-            }
-            ..onInviteAudienceToTakeSeatFailed = () {
-              debugPrint('on invite audience to take seat failed');
-            }
-            ..onSeatTakingInviteRejected = () {
-              debugPrint('on seat taking invite rejected');
-            }
-            ..onSeatTakingRequestFailed = () {
-              debugPrint('on seat taking request failed');
-            }
-            ..onSeatTakingRequestRejected = () {
-              debugPrint('on seat taking request rejected');
-            }
-            ..onHostSeatTakingInviteSent = () {
-              debugPrint('on host seat taking invite sent');
-            }
+        appID: yourAppID /*input your AppID*/,
+        appSign: yourAppSign /*input your AppSign*/,
+        userID: localUserID,
+        userName: 'user_$localUserID',
+        roomID: widget.roomID,
+        controller: liveController,
+        config: (widget.isHost
+            ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
+            : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
+          ..takeSeatIndexWhenJoining = widget.isHost ? getHostSeatIndex() : -1
+          ..hostSeatIndexes = getLockSeatIndex()
+          ..layoutConfig = getLayoutConfig()
+          ..seatConfig = getSeatConfig()
+          ..background = background()
+          ..inRoomMessageViewConfig = getMessageViewConfig()
+          ..topMenuBarConfig.buttons = [ZegoMenuBarButtonName.minimizingButton]
+          ..userAvatarUrl =
+              'https://robohash.org/${DateTime.now().millisecondsSinceEpoch}.png'
+          ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
+            debugPrint(
+                'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
+          }
+          ..onSeatClosed = () {
+            debugPrint('on seat closed');
+          }
+          ..onSeatsOpened = () {
+            debugPrint('on seat opened');
+          }
+          ..onSeatsChanged = (
+            Map<int, ZegoUIKitUser> takenSeats,
+            List<int> untakenSeats,
+          ) {
+            debugPrint(
+                'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
+          }
+          ..onSeatTakingRequested = (ZegoUIKitUser audience) {
+            debugPrint('on seat taking requested, audience:$audience');
+          }
+          ..onSeatTakingRequestCanceled = (ZegoUIKitUser audience) {
+            debugPrint('on seat taking request canceled, audience:$audience');
+          }
+          ..onInviteAudienceToTakeSeatFailed = () {
+            debugPrint('on invite audience to take seat failed');
+          }
+          ..onSeatTakingInviteRejected = () {
+            debugPrint('on seat taking invite rejected');
+          }
+          ..onSeatTakingRequestFailed = () {
+            debugPrint('on seat taking request failed');
+          }
+          ..onSeatTakingRequestRejected = () {
+            debugPrint('on seat taking request rejected');
+          }
+          ..onHostSeatTakingInviteSent = () {
+            debugPrint('on host seat taking invite sent');
+          }
 
           /// WARNING: will override prebuilt logic
           // ..onSeatClicked = (int index, ZegoUIKitUser? user) {
           //   debugPrint(
           //       'on seat clicked, index:$index, user:${user.toString()}');
-          //
-          //   showDemoBottomSheet(context);
           // }
 
           /// WARNING: will override prebuilt logic
-          // ..onMemberListMoreButtonPressed = (ZegoUIKitUser user) {
-          //   debugPrint(
-          //       'on member list more button pressed, user:${user.toString()}');
-          //
-          //   showDemoBottomSheet(context);
-          // },
-          ),
+          ..onMemberListMoreButtonPressed = onMemberListMoreButtonPressed,
+      ),
     );
   }
 
@@ -306,7 +310,7 @@ class LivePageState extends State<LivePage> {
     return config;
   }
 
-  void showDemoBottomSheet(BuildContext context) {
+  void onMemberListMoreButtonPressed(ZegoUIKitUser user) {
     showModalBottomSheet(
       backgroundColor: const Color(0xff111014),
       context: context,
@@ -319,27 +323,69 @@ class LivePageState extends State<LivePage> {
       isDismissible: true,
       isScrollControlled: true,
       builder: (BuildContext context) {
+        const textStyle = TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        );
+        final listMenu = widget.isHost
+            ? [
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+
+                    ZegoUIKit().removeUserFromRoom(
+                      [user.id],
+                    ).then((result) {
+                      debugPrint('kick out result:$result');
+                    });
+                  },
+                  child: Text(
+                    'Kick Out ${user.name}',
+                    style: textStyle,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+
+                    liveController
+                        ?.inviteAudienceToTakeSeat(user.id)
+                        .then((result) {
+                      debugPrint('invite audience to take seat result:$result');
+                    });
+                  },
+                  child: Text(
+                    'Invite ${user.name} to take seat',
+                    style: textStyle,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: textStyle,
+                  ),
+                ),
+              ]
+            : [];
         return AnimatedPadding(
           padding: MediaQuery.of(context).viewInsets,
           duration: const Duration(milliseconds: 50),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            padding: const EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: 10,
+            ),
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: listMenu.length,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 40,
-                  child: Center(
-                    child: Text(
-                      'Menu $index',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  height: 60,
+                  child: Center(child: listMenu[index]),
                 );
               },
             ),
