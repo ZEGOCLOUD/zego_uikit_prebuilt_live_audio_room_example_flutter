@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zegocloud.uikit.flutter.live_audio_room.R
+import im.zego.zego_express_engine.internal.ZegoExpressEngineEventHandler
+import im.zego.zegoexpress.ZegoExpressEngine
 
 /**
  * foreground service, only used to keep process foreground to receive messages
@@ -77,8 +79,13 @@ class ForegroundService : Service() {
         }
 
     override fun onDestroy() {
-        super.onDestroy()
+
         stopForeground(true)
+        stopSelf()
+
+        ZegoExpressEngine.destroyEngine {}
+
+        super.onDestroy()
     }
 
     private fun createNotificationChannel() {
