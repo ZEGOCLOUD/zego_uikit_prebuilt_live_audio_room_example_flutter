@@ -75,6 +75,20 @@ Widget simpleMediaPlayer({
                       color: Colors.red,
                     ),
                   ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: ZegoUIKit().getMediaMuteNotifier(),
+                    builder: (context, isMute, _) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          liveController?.media.muteLocal(!isMute);
+                        },
+                        child: Icon(
+                          isMute ? Icons.volume_off : Icons.volume_up,
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               );
             },
