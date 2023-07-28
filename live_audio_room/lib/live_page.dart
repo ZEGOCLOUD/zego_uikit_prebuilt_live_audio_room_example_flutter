@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:zego_uikit/zego_uikit.dart';
-import 'package:zego_uikit_prebuilt_live_audio_room/src/components/message/in_room_live_commenting_view_item.dart';
+import 'package:zego_uikit_prebuilt_live_audio_room/src/components/message/view_item.dart';
 import 'package:zego_uikit_prebuilt_live_audio_room/zego_uikit_prebuilt_live_audio_room.dart';
 
 // Project imports:
@@ -63,12 +63,10 @@ class LivePageState extends State<LivePage> {
               ..seatConfig = getSeatConfig()
               ..background = background()
               ..foreground = foreground(constraints)
-              ..inRoomMessageViewConfig = getMessageViewConfig()
               ..topMenuBarConfig.buttons = [
                 ZegoMenuBarButtonName.minimizingButton
               ]
-              ..userAvatarUrl =
-                  'https://robohash.org/${DateTime.now().millisecondsSinceEpoch}.png'
+              ..userAvatarUrl = 'https://robohash.org/$localUserID.png'
               ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
                 debugPrint(
                     'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
@@ -124,7 +122,7 @@ class LivePageState extends State<LivePage> {
   }
 
   Widget foreground(BoxConstraints constraints) {
-    // return Container();
+    return Container();
 
     return simpleMediaPlayer(
       canControl: widget.isHost,
@@ -195,38 +193,6 @@ class LivePageState extends State<LivePage> {
     return ZegoLiveAudioRoomSeatConfig(
         // avatarBuilder: avatarBuilder,
         );
-  }
-
-  ZegoInRoomMessageViewConfig getMessageViewConfig() {
-    return ZegoInRoomMessageViewConfig(itemBuilder: (
-      BuildContext context,
-      ZegoInRoomMessage message,
-      Map<String, dynamic> extraInfo,
-    ) {
-      /// how to use itemBuilder to custom message view
-      return Stack(
-        children: [
-          ZegoInRoomLiveCommentingViewItem(
-            user: message.user,
-            message: message.message,
-          ),
-
-          /// add a red point
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.red,
-              ),
-              width: 10,
-              height: 10,
-            ),
-          ),
-        ],
-      );
-    });
   }
 
   Widget avatarBuilder(

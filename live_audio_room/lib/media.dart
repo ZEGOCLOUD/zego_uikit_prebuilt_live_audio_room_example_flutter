@@ -50,7 +50,7 @@ Widget simpleMediaPlayer({
                           } else {
                             final mediaFile = files.first;
                             var targetPathOrURL = mediaFile.path ?? '';
-                            liveController?.media.play(
+                            liveController.media.play(
                               filePathOrURL: targetPathOrURL,
                             );
                           }
