@@ -6,14 +6,14 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.2.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.16.2 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  zego_uikit: ^2.12.0
-  zego_uikit_prebuilt_live_audio_room: ^2.11.2
+  zego_uikit: ^2.13.2
+  zego_uikit_prebuilt_live_audio_room: ^2.11.4
 
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0
