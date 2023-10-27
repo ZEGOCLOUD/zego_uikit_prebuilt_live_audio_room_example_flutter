@@ -42,9 +42,9 @@ Widget simpleMediaPlayer({
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      if (MediaPlayState.Playing == playState) {
+                      if (MediaPlayState.playing == playState) {
                         liveController?.media.pause();
-                      } else if (MediaPlayState.Pausing == playState) {
+                      } else if (MediaPlayState.pausing == playState) {
                         liveController?.media.resume();
                       } else {
                         liveController?.media.pickFile().then((files) {
@@ -63,7 +63,7 @@ Widget simpleMediaPlayer({
                       }
                     },
                     child: Icon(
-                      MediaPlayState.Playing == playState
+                      MediaPlayState.playing == playState
                           ? Icons.pause_circle
                           : Icons.play_circle,
                       color: Colors.white,
