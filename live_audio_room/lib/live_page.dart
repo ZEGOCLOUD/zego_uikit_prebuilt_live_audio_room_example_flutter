@@ -305,7 +305,7 @@ class LivePageState extends State<LivePage> {
           fontSize: 12,
           fontWeight: FontWeight.w500,
         );
-        final listMenu = widget.isHost
+        final listMenu = liveController.localHasHostPermissions
             ? [
                 GestureDetector(
                   onTap: () async {
