@@ -67,8 +67,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
-                if (ZegoUIKitPrebuiltLiveAudioRoomMiniOverlayMachine()
-                    .isMinimizing) {
+                if (ZegoLiveAudioRoomController().minimize.isMinimizing) {
                   /// when the application is minimized (in a minimized state),
                   /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
                   return;

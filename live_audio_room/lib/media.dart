@@ -13,7 +13,7 @@ Widget advanceMediaPlayer({
   const padding = 20;
   final playerSize =
       Size(constraints.maxWidth - padding * 2, constraints.maxWidth * 9 / 16);
-  return ZegoMediaPlayer(
+  return ZegoUIKitMediaPlayer(
     size: playerSize,
     // filePathOrURL:
     //     'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
@@ -35,16 +35,16 @@ Widget simpleMediaPlayer({
       ? Positioned(
           bottom: 60,
           right: 10,
-          child: ValueListenableBuilder<MediaPlayState>(
+          child: ValueListenableBuilder<ZegoUIKitMediaPlayState>(
             valueListenable: ZegoUIKit().getMediaPlayStateNotifier(),
             builder: (context, playState, _) {
               return Row(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      if (MediaPlayState.playing == playState) {
+                      if (ZegoUIKitMediaPlayState.playing == playState) {
                         liveController?.media.pause();
-                      } else if (MediaPlayState.pausing == playState) {
+                      } else if (ZegoUIKitMediaPlayState.pausing == playState) {
                         liveController?.media.resume();
                       } else {
                         liveController?.media.pickFile().then((files) {
@@ -63,7 +63,7 @@ Widget simpleMediaPlayer({
                       }
                     },
                     child: Icon(
-                      MediaPlayState.playing == playState
+                      ZegoUIKitMediaPlayState.playing == playState
                           ? Icons.pause_circle
                           : Icons.play_circle,
                       color: Colors.white,
