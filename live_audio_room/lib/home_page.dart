@@ -47,6 +47,8 @@ class HomePage extends StatelessWidget {
                     [
                       LayoutMode.defaultLayout,
                       LayoutMode.full,
+                      LayoutMode.horizontal,
+                      LayoutMode.vertical,
                       LayoutMode.hostTopCenter,
                       LayoutMode.hostCenter,
                       LayoutMode.fourPeoples,
@@ -67,7 +69,9 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
-                if (ZegoLiveAudioRoomController().minimize.isMinimizing) {
+                if (ZegoUIKitPrebuiltLiveAudioRoomController()
+                    .minimize
+                    .isMinimizing) {
                   /// when the application is minimized (in a minimized state),
                   /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
                   return;
@@ -86,7 +90,8 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
-                if (ZegoUIKitPrebuiltLiveAudioRoomMiniOverlayMachine()
+                if (ZegoUIKitPrebuiltLiveAudioRoomController()
+                    .minimize
                     .isMinimizing) {
                   /// when the application is minimized (in a minimized state),
                   /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.

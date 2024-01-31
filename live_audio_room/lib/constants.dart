@@ -9,6 +9,8 @@ final String localUserID = Random().nextInt(100000).toString();
 enum LayoutMode {
   defaultLayout,
   full,
+  horizontal,
+  vertical,
   hostTopCenter,
   hostCenter,
   fourPeoples,
@@ -19,6 +21,8 @@ extension LayoutModeExtension on LayoutMode {
     final mapValues = {
       LayoutMode.defaultLayout: 'default',
       LayoutMode.full: 'full',
+      LayoutMode.horizontal: 'horizontal',
+      LayoutMode.vertical: 'vertical',
       LayoutMode.hostTopCenter: 'host top center',
       LayoutMode.hostCenter: 'host center',
       LayoutMode.fourPeoples: 'four peoples',

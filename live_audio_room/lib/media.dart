@@ -29,37 +29,47 @@ Widget advanceMediaPlayer({
 
 Widget simpleMediaPlayer({
   required bool canControl,
-  required ZegoLiveAudioRoomController? liveController,
 }) {
   return canControl
       ? Positioned(
           bottom: 60,
           right: 10,
           child: ValueListenableBuilder<ZegoUIKitMediaPlayState>(
-            valueListenable: ZegoUIKit().getMediaPlayStateNotifier(),
+            valueListenable: ZegoUIKitPrebuiltLiveAudioRoomController()
+                .media
+                .playStateNotifier,
             builder: (context, playState, _) {
               return Row(
                 children: [
                   ElevatedButton(
                     onPressed: () {
                       if (ZegoUIKitMediaPlayState.playing == playState) {
-                        liveController?.media.pause();
+                        ZegoUIKitPrebuiltLiveAudioRoomController()
+                            .media
+                            .pause();
                       } else if (ZegoUIKitMediaPlayState.pausing == playState) {
-                        liveController?.media.resume();
+                        ZegoUIKitPrebuiltLiveAudioRoomController()
+                            .media
+                            .resume();
                       } else {
-                        liveController?.media.pickFile().then((files) {
+                        ZegoUIKitPrebuiltLiveAudioRoomController()
+                            .media
+                            .pickFile()
+                            .then((files) {
                           if (files.isEmpty) {
                             debugPrint('files is empty');
                           } else {
                             final mediaFile = files.first;
-                            var targetPathOrURL = mediaFile.path ?? '';
-                            liveController.media.play(
-                              filePathOrURL: targetPathOrURL,
-                            );
+                            final targetPathOrURL = mediaFile.path ?? '';
+                            ZegoUIKitPrebuiltLiveAudioRoomController()
+                                .media
+                                .play(
+                                  filePathOrURL: targetPathOrURL,
+                                );
                           }
                         });
 
-                        // liveController?.media.play(filePathOrURL:'https://xxx.com/xxx.mp3');
+                        // ZegoUIKitPrebuiltLiveAudioRoomController().media.play(filePathOrURL:'https://xxx.com/xxx.mp3');
                       }
                     },
                     child: Icon(
@@ -71,7 +81,7 @@ Widget simpleMediaPlayer({
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      liveController?.media.stop();
+                      ZegoUIKitPrebuiltLiveAudioRoomController().media.stop();
                     },
                     child: const Icon(
                       Icons.stop_circle,
@@ -79,11 +89,15 @@ Widget simpleMediaPlayer({
                     ),
                   ),
                   ValueListenableBuilder<bool>(
-                    valueListenable: ZegoUIKit().getMediaMuteNotifier(),
+                    valueListenable: ZegoUIKitPrebuiltLiveAudioRoomController()
+                        .media
+                        .muteNotifier,
                     builder: (context, isMute, _) {
                       return ElevatedButton(
                         onPressed: () {
-                          liveController?.media.muteLocal(!isMute);
+                          ZegoUIKitPrebuiltLiveAudioRoomController()
+                              .media
+                              .muteLocal(!isMute);
                         },
                         child: Icon(
                           isMute ? Icons.volume_off : Icons.volume_up,

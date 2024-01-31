@@ -26,99 +26,115 @@ class LivePage extends StatefulWidget {
 }
 
 class LivePageState extends State<LivePage> {
-  final liveController = ZegoLiveAudioRoomController();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return ZegoUIKitPrebuiltLiveAudioRoom(
-            appID: yourAppID /*input your AppID*/,
-            appSign: yourAppSign /*input your AppSign*/,
-            userID: localUserID,
-            userName: 'user_$localUserID',
-            roomID: widget.roomID,
-            controller: liveController,
-            config: (widget.isHost
-                ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
-                : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
-              ..takeSeatIndexWhenJoining =
-                  widget.isHost ? getHostSeatIndex() : -1
-              ..hostSeatIndexes = getLockSeatIndex()
-              ..layoutConfig = getLayoutConfig()
-              ..seatConfig = getSeatConfig()
-              ..background = background()
-              ..foreground = foreground(constraints)
-              ..topMenuBarConfig.buttons = [
-                ZegoMenuBarButtonName.minimizingButton
-              ]
-              ..userAvatarUrl = 'https://robohash.org/$localUserID.png'
-              ..onUserCountOrPropertyChanged = (List<ZegoUIKitUser> users) {
-                debugPrint(
-                    'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}');
-              }
-              ..onSeatClosed = () {
-                debugPrint('on seat closed');
-              }
-              ..onSeatsOpened = () {
-                debugPrint('on seat opened');
-              }
-              ..onSeatsChanged = (
-                Map<int, ZegoUIKitUser> takenSeats,
-                List<int> untakenSeats,
-              ) {
-                debugPrint(
-                    'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats');
-              }
-              ..onSeatTakingRequested = (ZegoUIKitUser audience) {
-                debugPrint('on seat taking requested, audience:$audience');
-              }
-              ..onSeatTakingRequestCanceled = (ZegoUIKitUser audience) {
-                debugPrint(
-                    'on seat taking request canceled, audience:$audience');
-              }
-              ..onInviteAudienceToTakeSeatFailed = () {
-                debugPrint('on invite audience to take seat failed');
-              }
-              ..onSeatTakingInviteRejected = () {
-                debugPrint('on seat taking invite rejected');
-              }
-              ..onSeatTakingRequestFailed = () {
-                debugPrint('on seat taking request failed');
-              }
-              ..onSeatTakingRequestRejected = () {
-                debugPrint('on seat taking request rejected');
-              }
-              ..onHostSeatTakingInviteSent = () {
-                debugPrint('on host seat taking invite sent');
-              }
-
-              /// WARNING: will override prebuilt logic
-              // ..onSeatClicked = (int index, ZegoUIKitUser? user) {
-              //   debugPrint(
-              //       'on seat clicked, index:$index, user:${user.toString()}');
-              // }
-
-              /// WARNING: will override prebuilt logic
-              ..onMemberListMoreButtonPressed = onMemberListMoreButtonPressed,
-          );
-        },
+      child: ZegoUIKitPrebuiltLiveAudioRoom(
+        appID: yourAppID /*input your AppID*/,
+        appSign: yourAppSign /*input your AppSign*/,
+        userID: localUserID,
+        userName: 'user_$localUserID',
+        roomID: widget.roomID,
+        events: events,
+        config: config,
       ),
     );
   }
 
-  Widget foreground(BoxConstraints constraints) {
-    return Container();
+  ZegoUIKitPrebuiltLiveAudioRoomConfig get config {
+    return (widget.isHost
+        ? ZegoUIKitPrebuiltLiveAudioRoomConfig.host()
+        : ZegoUIKitPrebuiltLiveAudioRoomConfig.audience())
+      ..seat = (getSeatConfig()
+        ..takeIndexWhenJoining = widget.isHost ? getHostSeatIndex() : -1
+        ..hostIndexes = getLockSeatIndex()
+        ..layout = getLayoutConfig())
+      ..background = background()
+      ..foreground = foreground()
+      ..topMenuBar.buttons = [
+        ZegoLiveAudioRoomMenuBarButtonName.minimizingButton
+      ]
+      ..userAvatarUrl = 'https://robohash.org/$localUserID.png';
+  }
 
-    return simpleMediaPlayer(
-      canControl: widget.isHost,
-      liveController: liveController,
+  ZegoUIKitPrebuiltLiveAudioRoomEvents get events {
+    return ZegoUIKitPrebuiltLiveAudioRoomEvents(
+      user: ZegoLiveAudioRoomUserEvents(
+        onCountOrPropertyChanged: (List<ZegoUIKitUser> users) {
+          debugPrint(
+            'onUserCountOrPropertyChanged:${users.map((e) => e.toString())}',
+          );
+        },
+      ),
+      seat: ZegoLiveAudioRoomSeatEvents(
+        onClosed: () {
+          debugPrint('on seat closed');
+        },
+        onOpened: () {
+          debugPrint('on seat opened');
+        },
+        onChanged: (
+          Map<int, ZegoUIKitUser> takenSeats,
+          List<int> untakenSeats,
+        ) {
+          debugPrint(
+            'on seats changed, taken seats:$takenSeats, untaken seats:$untakenSeats',
+          );
+        },
+
+        /// WARNING: will override prebuilt logic
+        // onClicked:(int index, ZegoUIKitUser? user) {
+        //   debugPrint(
+        //       'on seat clicked, index:$index, user:${user.toString()}');
+        // },
+        host: ZegoLiveAudioRoomSeatHostEvents(
+          onTakingRequested: (ZegoUIKitUser audience) {
+            debugPrint('on seat taking requested, audience:$audience');
+          },
+          onTakingRequestCanceled: (ZegoUIKitUser audience) {
+            debugPrint('on seat taking request canceled, audience:$audience');
+          },
+          onTakingInvitationFailed: () {
+            debugPrint('on invite audience to take seat failed');
+          },
+          onTakingInvitationRejected: (ZegoUIKitUser audience) {
+            debugPrint('on seat taking invite rejected');
+          },
+        ),
+        audience: ZegoLiveAudioRoomSeatAudienceEvents(
+          onTakingRequestFailed: () {
+            debugPrint('on seat taking request failed');
+          },
+          onTakingRequestRejected: () {
+            debugPrint('on seat taking request rejected');
+          },
+          onTakingInvitationReceived: () {
+            debugPrint('on host seat taking invite sent');
+          },
+        ),
+      ),
+
+      /// WARNING: will override prebuilt logic
+      memberList: ZegoLiveAudioRoomMemberListEvents(
+        onMoreButtonPressed: onMemberListMoreButtonPressed,
+      ),
     );
+  }
 
-    return advanceMediaPlayer(
-      constraints: constraints,
-      canControl: widget.isHost,
+  Widget foreground() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container();
+
+        return simpleMediaPlayer(
+          canControl: widget.isHost,
+        );
+
+        return advanceMediaPlayer(
+          constraints: constraints,
+          canControl: widget.isHost,
+        );
+      },
     );
   }
 
@@ -191,7 +207,7 @@ class LivePageState extends State<LivePage> {
     return CircleAvatar(
       maxRadius: size.width,
       backgroundImage: Image.asset(
-              "assets/avatars/avatar_${((int.tryParse(user?.id ?? "") ?? 0) % 6).toString()}.png")
+              "assets/avatars/avatar_${((int.tryParse(user?.id ?? "") ?? 0) % 6)}.png")
           .image,
     );
   }
@@ -219,24 +235,32 @@ class LivePageState extends State<LivePage> {
         break;
       case LayoutMode.full:
         config.rowSpacing = 5;
+        config.rowConfigs = List.generate(
+          4,
+          (index) => ZegoLiveAudioRoomLayoutRowConfig(
+            count: 4,
+            alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
+          ),
+        );
+        break;
+      case LayoutMode.horizontal:
+        config.rowSpacing = 5;
         config.rowConfigs = [
           ZegoLiveAudioRoomLayoutRowConfig(
-            count: 4,
-            alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
-          ),
-          ZegoLiveAudioRoomLayoutRowConfig(
-            count: 4,
-            alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
-          ),
-          ZegoLiveAudioRoomLayoutRowConfig(
-            count: 4,
-            alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
-          ),
-          ZegoLiveAudioRoomLayoutRowConfig(
-            count: 4,
+            count: 8,
             alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
           ),
         ];
+        break;
+      case LayoutMode.vertical:
+        config.rowSpacing = 5;
+        config.rowConfigs = List.generate(
+          8,
+          (index) => ZegoLiveAudioRoomLayoutRowConfig(
+            count: 1,
+            alignment: ZegoLiveAudioRoomLayoutAlignment.spaceBetween,
+          ),
+        );
         break;
       case LayoutMode.hostTopCenter:
         config.rowConfigs = [
@@ -305,7 +329,9 @@ class LivePageState extends State<LivePage> {
           fontSize: 12,
           fontWeight: FontWeight.w500,
         );
-        final listMenu = liveController.localHasHostPermissions
+        final listMenu = ZegoUIKitPrebuiltLiveAudioRoomController()
+                .seat
+                .localHasHostPermissions
             ? [
                 GestureDetector(
                   onTap: () async {
@@ -326,8 +352,10 @@ class LivePageState extends State<LivePage> {
                   onTap: () async {
                     Navigator.of(context).pop();
 
-                    liveController
-                        ?.inviteAudienceToTakeSeat(user.id)
+                    ZegoUIKitPrebuiltLiveAudioRoomController()
+                        .seat
+                        .host
+                        .inviteToTake(user.id)
                         .then((result) {
                       debugPrint('invite audience to take seat result:$result');
                     });
