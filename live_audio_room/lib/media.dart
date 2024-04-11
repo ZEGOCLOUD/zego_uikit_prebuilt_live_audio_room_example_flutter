@@ -31,85 +31,93 @@ Widget simpleMediaPlayer({
   required bool canControl,
 }) {
   return canControl
-      ? Positioned(
-          bottom: 60,
-          right: 10,
-          child: ValueListenableBuilder<ZegoUIKitMediaPlayState>(
-            valueListenable: ZegoUIKitPrebuiltLiveAudioRoomController()
-                .media
-                .playStateNotifier,
-            builder: (context, playState, _) {
-              return Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (ZegoUIKitMediaPlayState.playing == playState) {
-                        ZegoUIKitPrebuiltLiveAudioRoomController()
-                            .media
-                            .pause();
-                      } else if (ZegoUIKitMediaPlayState.pausing == playState) {
-                        ZegoUIKitPrebuiltLiveAudioRoomController()
-                            .media
-                            .resume();
-                      } else {
-                        ZegoUIKitPrebuiltLiveAudioRoomController()
-                            .media
-                            .pickFile()
-                            .then((files) {
-                          if (files.isEmpty) {
-                            debugPrint('files is empty');
-                          } else {
-                            final mediaFile = files.first;
-                            final targetPathOrURL = mediaFile.path ?? '';
+      ? Stack(
+          children: [
+            Positioned(
+              bottom: 60,
+              right: 10,
+              child: ValueListenableBuilder<ZegoUIKitMediaPlayState>(
+                valueListenable: ZegoUIKitPrebuiltLiveAudioRoomController()
+                    .media
+                    .playStateNotifier,
+                builder: (context, playState, _) {
+                  return Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (ZegoUIKitMediaPlayState.playing == playState) {
                             ZegoUIKitPrebuiltLiveAudioRoomController()
                                 .media
-                                .play(
-                                  filePathOrURL: targetPathOrURL,
-                                );
-                          }
-                        });
+                                .pause();
+                          } else if (ZegoUIKitMediaPlayState.pausing ==
+                              playState) {
+                            ZegoUIKitPrebuiltLiveAudioRoomController()
+                                .media
+                                .resume();
+                          } else {
+                            ZegoUIKitPrebuiltLiveAudioRoomController()
+                                .media
+                                .pickFile()
+                                .then((files) {
+                              if (files.isEmpty) {
+                                debugPrint('files is empty');
+                              } else {
+                                final mediaFile = files.first;
+                                final targetPathOrURL = mediaFile.path ?? '';
+                                ZegoUIKitPrebuiltLiveAudioRoomController()
+                                    .media
+                                    .play(
+                                      filePathOrURL: targetPathOrURL,
+                                    );
+                              }
+                            });
 
-                        // ZegoUIKitPrebuiltLiveAudioRoomController().media.play(filePathOrURL:'https://xxx.com/xxx.mp3');
-                      }
-                    },
-                    child: Icon(
-                      ZegoUIKitMediaPlayState.playing == playState
-                          ? Icons.pause_circle
-                          : Icons.play_circle,
-                      color: Colors.white,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      ZegoUIKitPrebuiltLiveAudioRoomController().media.stop();
-                    },
-                    child: const Icon(
-                      Icons.stop_circle,
-                      color: Colors.red,
-                    ),
-                  ),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: ZegoUIKitPrebuiltLiveAudioRoomController()
-                        .media
-                        .muteNotifier,
-                    builder: (context, isMute, _) {
-                      return ElevatedButton(
+                            // ZegoUIKitPrebuiltLiveAudioRoomController().media.play(filePathOrURL:'https://xxx.com/xxx.mp3');
+                          }
+                        },
+                        child: Icon(
+                          ZegoUIKitMediaPlayState.playing == playState
+                              ? Icons.pause_circle
+                              : Icons.play_circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                      ElevatedButton(
                         onPressed: () {
                           ZegoUIKitPrebuiltLiveAudioRoomController()
                               .media
-                              .muteLocal(!isMute);
+                              .stop();
                         },
-                        child: Icon(
-                          isMute ? Icons.volume_off : Icons.volume_up,
-                          color: Colors.white,
+                        child: const Icon(
+                          Icons.stop_circle,
+                          color: Colors.red,
                         ),
-                      );
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
+                      ),
+                      ValueListenableBuilder<bool>(
+                        valueListenable:
+                            ZegoUIKitPrebuiltLiveAudioRoomController()
+                                .media
+                                .muteNotifier,
+                        builder: (context, isMute, _) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              ZegoUIKitPrebuiltLiveAudioRoomController()
+                                  .media
+                                  .muteLocal(!isMute);
+                            },
+                            child: Icon(
+                              isMute ? Icons.volume_off : Icons.volume_up,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
         )
       : Container();
 }

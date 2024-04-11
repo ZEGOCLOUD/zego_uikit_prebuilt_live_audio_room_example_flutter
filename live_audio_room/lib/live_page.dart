@@ -50,7 +50,7 @@ class LivePageState extends State<LivePage> {
         ..hostIndexes = getLockSeatIndex()
         ..layout = getLayoutConfig())
       ..background = background()
-      ..foreground = foreground()
+      ..emptyAreaBuilder = mediaPlayer
       ..topMenuBar.buttons = [
         ZegoLiveAudioRoomMenuBarButtonName.minimizingButton
       ]
@@ -121,7 +121,7 @@ class LivePageState extends State<LivePage> {
     );
   }
 
-  Widget foreground() {
+  Widget mediaPlayer(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container();
