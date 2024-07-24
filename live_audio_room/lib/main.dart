@@ -36,7 +36,9 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: HomePage(),
+      home: ZegoUIKitPrebuiltLiveAudioRoomMiniPopScope(
+        child: HomePage(),
+      ),
       navigatorKey: widget.navigatorKey,
       builder: (BuildContext context, Widget? child) {
         return Stack(

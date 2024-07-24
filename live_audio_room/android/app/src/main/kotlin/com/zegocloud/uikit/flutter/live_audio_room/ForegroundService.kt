@@ -6,12 +6,11 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zegocloud.uikit.flutter.live_audio_room.R
-import im.zego.zego_express_engine.internal.ZegoExpressEngineEventHandler
-import im.zego.zegoexpress.ZegoExpressEngine
 
 /**
  * foreground service, only used to keep process foreground to receive messages
@@ -62,7 +61,11 @@ class ForegroundService : Service() {
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(appName).setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent).setOngoing(false).setAutoCancel(true)
-        startForeground(ID, builder.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            startForeground(NOTIFICATION_ID, builder.build(), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+        } else {
+            startForeground(NOTIFICATION_ID, builder.build(),)
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -82,8 +85,6 @@ class ForegroundService : Service() {
 
         stopForeground(true)
         stopSelf()
-
-        ZegoExpressEngine.destroyEngine {}
 
         super.onDestroy()
     }
@@ -107,6 +108,6 @@ class ForegroundService : Service() {
     }
 
     companion object {
-        private const val ID = 65532
+        private const val NOTIFICATION_ID = 65532
     }
 }
