@@ -74,7 +74,10 @@ class HomePage extends StatelessWidget {
                     .isMinimizing) {
                   /// when the application is minimized (in a minimized state),
                   /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
-                  return;
+                  ZegoUIKitPrebuiltLiveAudioRoomController().minimize.restore(
+                        context,
+                        withSafeArea: true,
+                      );
                 }
 
                 jumpToLivePage(
@@ -95,7 +98,10 @@ class HomePage extends StatelessWidget {
                     .isMinimizing) {
                   /// when the application is minimized (in a minimized state),
                   /// disable button clicks to prevent multiple PrebuiltAudioRoom components from being created.
-                  return;
+                  ZegoUIKitPrebuiltLiveAudioRoomController().minimize.restore(
+                        context,
+                        withSafeArea: true,
+                      );
                 }
 
                 jumpToLivePage(
