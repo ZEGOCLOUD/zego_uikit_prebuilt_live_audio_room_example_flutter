@@ -52,7 +52,8 @@ class LivePageState extends State<LivePage> {
       ..background = background()
       ..emptyAreaBuilder = mediaPlayer
       ..topMenuBar.buttons = [
-        ZegoLiveAudioRoomMenuBarButtonName.minimizingButton
+        ZegoLiveAudioRoomMenuBarButtonName.minimizingButton,
+        ZegoLiveAudioRoomMenuBarButtonName.leaveButton,
       ]
       ..userAvatarUrl = 'https://robohash.org/$localUserID.png';
   }
