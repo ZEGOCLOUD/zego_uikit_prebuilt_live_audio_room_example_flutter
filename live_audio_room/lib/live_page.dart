@@ -50,8 +50,14 @@ class LivePageState extends State<LivePage> {
         ..hostIndexes = getLockSeatIndex()
         ..layout = getLayoutConfig())
       ..background = background()
-      ..emptyAreaBuilder = mediaPlayer
+      ..mediaPlayer.defaultPlayer.support = true
+      // ..emptyAreaBuilder = (_) {
+      //   return simpleMediaPlayer(
+      //     canControl: widget.isHost,
+      //   );
+      // }
       ..topMenuBar.buttons = [
+        ZegoLiveAudioRoomMenuBarButtonName.pipButton,
         ZegoLiveAudioRoomMenuBarButtonName.minimizingButton,
         ZegoLiveAudioRoomMenuBarButtonName.leaveButton,
       ]
@@ -119,23 +125,6 @@ class LivePageState extends State<LivePage> {
       memberList: ZegoLiveAudioRoomMemberListEvents(
         onMoreButtonPressed: onMemberListMoreButtonPressed,
       ),
-    );
-  }
-
-  Widget mediaPlayer(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container();
-
-        return simpleMediaPlayer(
-          canControl: widget.isHost,
-        );
-
-        return advanceMediaPlayer(
-          constraints: constraints,
-          canControl: widget.isHost,
-        );
-      },
     );
   }
 
