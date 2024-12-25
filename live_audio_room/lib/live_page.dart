@@ -50,7 +50,7 @@ class LivePageState extends State<LivePage> {
         ..hostIndexes = getLockSeatIndex()
         ..layout = getLayoutConfig())
       ..background = background()
-      ..mediaPlayer.defaultPlayer.support = true
+      // ..mediaPlayer.defaultPlayer.support = true
       // ..emptyAreaBuilder = (_) {
       //   return simpleMediaPlayer(
       //     canControl: widget.isHost,

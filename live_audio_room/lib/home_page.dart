@@ -118,8 +118,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void jumpToLivePage(BuildContext context,
-      {required String roomID, required bool isHost}) {
+  void jumpToLivePage(context, {required String roomID, required bool isHost}) {
     Navigator.push(
       context,
       MaterialPageRoute(
